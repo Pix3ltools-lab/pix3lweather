@@ -1,36 +1,117 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# WeatherBoard
 
-## Getting Started
+> A Next.js 14 weather dashboard — built as a demo to showcase **pix3lboard** and the **pix3lmcp** MCP server.
 
-First, run the development server:
+![WeatherBoard screenshot](screenshot.png)
+*Add a screenshot after first run*
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## What this demo shows
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This project was built entirely with [Claude Code](https://claude.ai/claude-code) using two custom MCP servers:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **[pix3lboard](https://github.com/pix3l/pix3lboard)** — a Kanban board server used to track development tasks in real time. Every card was created automatically at the start of the session and moved from *Backlog → In Progress → Done* as the code was written.
+- **pix3lmcp** — the MCP server that exposes pix3lboard's tools to Claude Code, allowing the AI to read and write the board without any manual interaction.
 
-## Learn More
+The result: a fully functional weather app and a live Kanban board, both generated and maintained by Claude Code in a single session.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- 🌤️ **Current weather** — temperature, feels-like, humidity, wind, pressure, UV index, sunrise/sunset
+- 📅 **7-day forecast** with weather icons and precipitation probability
+- 📈 **Hourly chart** — temperature + precipitation probability for the next 24 h (dual Y axis)
+- 🗂️ **Historical charts** with date range picker:
+  - Temperature (max/min with fill)
+  - Atmospheric pressure
+  - Precipitation
+  - Humidity
+  - Wind speed
+- 🔀 **Variable overlay chart** — any two variables on dual Y axes + Pearson correlation
+- 📆 **Year comparison chart** — same date range across two different years (1940 → present)
+- 🔍 **City search** — geocoding powered by Open-Meteo
+- 🌙 **Dark / Light / System theme** with localStorage persistence
+- 📲 **PWA** — installable, works offline with last cached data
+- 🔔 **Web Push notifications** for rain/storm alerts
+
+---
+
+## Data source
+
+All weather data comes from [Open-Meteo](https://open-meteo.com/) — free, no API key required.
+API calls are proxied through Next.js API routes with appropriate `Cache-Control` headers.
+
+---
+
+## Quick start
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/pix3lweather.git
+   cd pix3lweather
+   ```
+
+2. Copy the example env file and fill in the values:
+   ```bash
+   cp .env.local.example .env.local
+   ```
+
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+4. Run the dev server:
+   ```bash
+   npm run dev
+   ```
+
+5. Open [http://localhost:3000](http://localhost:3000)
+
+---
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/YOUR_USERNAME/pix3lweather)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Environment variables
+
+| Variable | Description | Required | Example |
+|---|---|---|---|
+| `NEXT_PUBLIC_DEFAULT_CITY` | Display name for the default location | Yes | `Milan` |
+| `NEXT_PUBLIC_DEFAULT_LAT` | Latitude of the default location | Yes | `45.4654` |
+| `NEXT_PUBLIC_DEFAULT_LON` | Longitude of the default location | Yes | `9.1859` |
+| `NEXT_PUBLIC_VAPID_PUBLIC_KEY` | VAPID public key for push notifications | No | `BxxxxxxX...` |
+| `VAPID_PRIVATE_KEY` | VAPID private key for push notifications | No | `xxxxxxx...` |
+
+### Generating VAPID keys
+
+```bash
+npx web-push generate-vapid-keys
+```
+
+> **Note:** Push subscriptions are stored in memory. For production, replace the in-memory store in `lib/push.ts` with a database.
+
+---
+
+## Tech stack
+
+| Layer | Tool |
+|---|---|
+| Framework | Next.js 14 (App Router) |
+| Styling | Tailwind CSS |
+| Charts | Chart.js + react-chartjs-2 |
+| Themes | next-themes |
+| PWA | next-pwa |
+| Push | web-push (VAPID) |
+| Data | Open-Meteo API |
+
+---
+
+## License
+
+MIT
