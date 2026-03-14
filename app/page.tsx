@@ -26,9 +26,18 @@ export default function Home() {
   const defaultLon = parseFloat(process.env.NEXT_PUBLIC_DEFAULT_LON ?? '9.1859');
   const defaultCity = process.env.NEXT_PUBLIC_DEFAULT_CITY ?? 'Milan';
 
-  const [lat, setLat] = useState(defaultLat);
-  const [lon, setLon] = useState(defaultLon);
-  const [city, setCity] = useState(defaultCity);
+  const [lat, setLat] = useState(() => {
+    if (typeof window === 'undefined') return defaultLat;
+    return parseFloat(localStorage.getItem('location-lat') ?? String(defaultLat));
+  });
+  const [lon, setLon] = useState(() => {
+    if (typeof window === 'undefined') return defaultLon;
+    return parseFloat(localStorage.getItem('location-lon') ?? String(defaultLon));
+  });
+  const [city, setCity] = useState(() => {
+    if (typeof window === 'undefined') return defaultCity;
+    return localStorage.getItem('location-city') ?? defaultCity;
+  });
   const [data, setData] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -37,6 +46,9 @@ export default function Home() {
     setCity(newCity);
     setLat(newLat);
     setLon(newLon);
+    localStorage.setItem('location-city', newCity);
+    localStorage.setItem('location-lat', String(newLat));
+    localStorage.setItem('location-lon', String(newLon));
   }
 
   useEffect(() => {
