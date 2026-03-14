@@ -2,8 +2,7 @@
 
 > A Next.js 14 weather dashboard — built as a demo to showcase **pix3lboard** and the **pix3lmcp** MCP server.
 
-![WeatherBoard screenshot](screenshot.png)
-*Add a screenshot after first run*
+![WeatherBoard screenshot](screenshot.jpg)
 
 ---
 
