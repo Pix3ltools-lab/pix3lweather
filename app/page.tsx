@@ -22,9 +22,9 @@ function Skeleton({ className }: { className?: string }) {
 }
 
 export default function Home() {
-  const defaultLat = parseFloat(process.env.NEXT_PUBLIC_DEFAULT_LAT ?? '45.4654');
-  const defaultLon = parseFloat(process.env.NEXT_PUBLIC_DEFAULT_LON ?? '9.1859');
-  const defaultCity = process.env.NEXT_PUBLIC_DEFAULT_CITY ?? 'Milan';
+  const defaultLat = parseFloat(process.env.NEXT_PUBLIC_DEFAULT_LAT ?? '51.5085');
+  const defaultLon = parseFloat(process.env.NEXT_PUBLIC_DEFAULT_LON ?? '-0.1257');
+  const defaultCity = process.env.NEXT_PUBLIC_DEFAULT_CITY ?? 'London';
 
   const [lat, setLat] = useState(() => {
     if (typeof window === 'undefined') return defaultLat;
